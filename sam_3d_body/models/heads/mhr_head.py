@@ -107,13 +107,13 @@ class MHRHead(nn.Module):
         # Load MHR itself
         if MOMENTUM_ENABLED:
             self.mhr = MHR.from_files(
-                device=torch.device("cuda" if torch.cuda.is_available() else "cpu"),
+                device=torch.device("cpu"),
                 lod=1,
             )
         else:
             self.mhr = torch.jit.load(
                 mhr_model_path,
-                map_location=("cuda" if torch.cuda.is_available() else "cpu"),
+                map_location="cpu",
             )
 
         for param in self.mhr.parameters():

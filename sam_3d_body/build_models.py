@@ -7,12 +7,19 @@ from .utils.config import get_config
 from .utils.checkpoint import load_state_dict
 
 
-def load_sam_3d_body(checkpoint_path: str = "", device: str = "cuda", mhr_path: str = ""):
+def load_sam_3d_body(
+    checkpoint_path: str = "",
+    device: str = "cuda",
+    mhr_path: str = "",
+    model_config_path: str | None = None,
+):
     print("Loading SAM 3D Body model...")
     
     # Check the current directory, and if not present check the parent dir.
-    model_cfg = os.path.join(os.path.dirname(checkpoint_path), "model_config.yaml")
-    if not os.path.exists(model_cfg):
+    model_cfg = model_config_path
+    if model_cfg is None:
+        model_cfg = os.path.join(os.path.dirname(checkpoint_path), "model_config.yaml")
+    if model_config_path is None and not os.path.exists(model_cfg):
         # Looks at parent dir
         model_cfg = os.path.join(
             os.path.dirname(os.path.dirname(checkpoint_path)), "model_config.yaml"

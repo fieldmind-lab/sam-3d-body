@@ -1,6 +1,6 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
-import torch
+from dinov3.hub import backbones
 from torch import nn
 
 
@@ -12,10 +12,7 @@ class Dinov3Backbone(nn.Module):
         self.name = name
         self.cfg = cfg
 
-        self.encoder = torch.hub.load(
-            "facebookresearch/dinov3",
-            self.name,
-            source="github",
+        self.encoder = getattr(backbones, self.name)(
             pretrained=False,
             drop_path=self.cfg.MODEL.BACKBONE.DROP_PATH_RATE,
         )
